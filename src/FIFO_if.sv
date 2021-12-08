@@ -15,8 +15,8 @@ interface FIFO_signals
     logic   rdclk;
     logic   rd_rst;
     logic   empty;
-    logic   [WIDTH-1:0] data_in;
-    logic   [WIDTH-1:0] data_out;
+    data_ty data_in;
+    data_ty data_out;
 
     modport prov ( //Provider of signals
         input full, 
