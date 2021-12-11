@@ -7,7 +7,7 @@ import fifo_pkg::*;
 	input bit         wr_rst,
 	input bit         rd_clk,
 	input bit         rd_rst,
-   	FIFO_signals.cons      itf
+   fifo_if.fifo      itf
 );
 
 
