@@ -4,32 +4,26 @@ class FIFO_driver;
     localparam FDEPTH = 32;
 
     virtual FIFO_signals if_FIFO;
-    virtual FIFO_signals if_QUEUE;
+
+    data_ty queue_fifo[$];
+    //Maybe 2 Queue's to simulate the write address and read address.
+    data_ty temporal = '0;
 
     data_ty data_temp;
     logic push_temp;
     logic pop_temp;
 
-
-    function new(   virtual FIFO_signals.prov A,
-                    virtual FIFO_signals.prov B,    
-                );
-
+    function new(virtual FIFO_signals.prov A);
         if_FIFO = A;
-        if_QUEUE = B;
-
     endfunction //new()
 
-    task clear_FIFO(); //Task to reset the FIFO
+    task clear_FIFO(); //Task to reset the FIFO and the queue
         if_FIFO.wr_rst = 1'b1;
         if_FIFO.rd_rst = 1'b1;
-        if_QUEUE.wr_rst = 1'b1;
-        if_QUEUE.rd_rst = 1'b1;
+        queue_fifo.delete();
         #1;
         if_FIFO.wr_rst = 1'b0;
         if_FIFO.rd_rst = 1'b0;
-        if_QUEUE.wr_rst = 1'b0;
-        if_QUEUE.rd_rst = 1'b0;
         #1;        
     endtask
 
@@ -37,22 +31,20 @@ class FIFO_driver;
         #0.2;
         data_temp = $random() & (2**DWIDTH-1);
         if_FIFO.data_in = data_temp;
-        if_QUEUE.data_in = data_temp;
         push_temp = $random() & 1'b1;
         if_FIFO.push = push_temp;
-        if_QUEUE.push = push_temp;
-        
+        if (push_temp) queue_fifo.push_front(data_temp);
     endtask
 
-    task Data_pop(output data_ty data_task_out_FIFO, data_task_out_QUEUE); //Task for random data pop
-        #0.2;
+    function data_ty Data_pop(); //Task for random data pop
         pop_temp = $random() & 1'b1;
         if_FIFO.pop = pop_temp;
-        if_QUEUE.pop = pop_temp;
-        #0.2;
-        data_task_out_FIFO = if_FIFO.data_out;
-        data_task_out_QUEUE = if_QUEUE.data_out;
-    endtask
+        if (pop_temp) queue_fifo.pop_back(temporal);
+        Data_pop = temporal;
+    endfunction
 
+    function int queue_size();
+        queue_size = queue_fifo.size();
+    endfunction
 
 endclass //FIFO_driver
