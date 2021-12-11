@@ -1,9 +1,9 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 module TB_FIFO ();
 include "FIFO_driver.svh";
 
-import fifo_pkg::*;
+import afifo_pkte::*;
 //integer text_id;
 bit wr_clk = 0;
 bit rd_clk = 0;
@@ -14,16 +14,18 @@ bit rd_rst;
 FIFO_driver  t;
 
 // Instance of interface
-FIFO_signals   itf	(
+FIFO_signals  	#(
+    .WIDTH(8)
+)			itf(
 								.clk_wr	(wr_clk), 
 								.clk_rd	(rd_clk)
 							);
 
 fifo_top	uut	(
-						.wr_clk	(wr_clk),
-						.wr_rst	(Wr_rst),
-						.rd_clk	(rd_clk),
-						.rd_rst	(rd_rst),
+						.wr_clk	(itf.clk_wr),
+						.wr_rst	(itf.wr_rst),
+						.rd_clk	(itf.clk_rd),
+						.rd_rst	(itf.rd_rst),
 						.itf		(itf.cons)
 					);
 
@@ -60,25 +62,37 @@ fifo_top	uut	(
 
 //task drafts
 task overflow (input int q_size);
-	if (q_size <= 16)
-		for(integer i=q_size; i<=17; i++)
+	$display("Tasky Overflow llamada...");
+	if (q_size <= 16)begin
+		$display("If del overflow");
+		for(integer i=q_size; i<=16; i++)begin
+			$display("For de Overflow");
 			t.Data_inj();
+		end
+	end
 endtask
 			
 			
 task underflow (input int q_size);
+	data_ty pop;	
 	//integer j;
-	data_ty pop;
-	if (q_size > 0)
-		for(integer j=q_size; j>=0; j--)
+	$display("Tasky underflow llamada...");
+	if (q_size > 0)begin
+		$display("If del underflow");
+		for(integer j=q_size; j>=0; j--)begin
+			$display("For del underflow");
 			pop = t.Data_pop();
+		end	
+	end
 endtask
 			
 			
 task monitor ();
-	if(t.Data_pop != itf.Data_out)
-		$display($time,"Error: Expected %d, Obtained %d", t.Data_pop, itf.Data_out); 
-		$stop(1);
+	$display("Monitor llamado...");
+	if(t.Data_pop != itf.data_out)begin
+		$display("Time: %t, Error: Expected %d, Obtained %d", $time, t.Data_pop, itf.data_out); 
+		$stop(2);
+	end
 endtask
 
 
@@ -96,12 +110,16 @@ initial begin
                 t.clear_FIFO();					 
   #8			  	
                 fork
+					$display("Hilo de ejecucion Fork creado...");
                     //t.Data_inj();
-						  //t.Data_pop();
-						  overflow(t.queue_size);
-						  underflow(t.queue_size);
+					//t.Data_pop();
+					overflow(t.queue_size);
+					underflow(t.queue_size);
                     monitor();
                 join
-                $stop();
+				$display("TB initial finished...");
+
+				#10000 $stop(2);
 end
+
 endmodule

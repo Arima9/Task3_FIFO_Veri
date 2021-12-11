@@ -1,19 +1,14 @@
-`ifndef MY_FIFO_PKG
+// Coder:           DSc Abisai Ramirez Perez
+// Description:     This is the package of fifo
+`ifndef FIFO_PKG_SV
     `define FIFO_PKG_SV
-package fifo_pkg;
+package fifo_pkg ;
 
-    localparam D_WIDTH = 8;
-    localparam ADDRS   = 4;
-    localparam F_DEPTH = 2**ADDRS-1;
-    typedef logic [D_WIDTH-1:0] data_ty;
-    typedef logic [ADDRS-1:0]   addr_ty;
-    
-    /*
-    localparam  D_WIDTH      = 8;
+    localparam  W_DATA      = 8;
     localparam  W_ADDR      = 4;
-    //localparam  ADDR_GRAY   = W_ADDR + 1;
+    localparam  ADDR_GRAY   = W_ADDR + 1;
     localparam  W_DEPTH     = 2**W_ADDR;
-	localparam  ENB		    = 1'b1;
+	 localparam  ENB		    = 1'b1;
 
     typedef logic [W_DATA-1:0]        data_t;
     typedef logic [W_ADDR-1:0]        addr_t;
@@ -26,7 +21,6 @@ package fifo_pkg;
        NO_PUSH = 0,
        PUSH = 1
        } push_e_t;
-    */
-    
+
 endpackage
 `endif
