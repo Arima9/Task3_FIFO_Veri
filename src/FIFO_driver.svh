@@ -1,3 +1,4 @@
+import fifo_pkg::*;
 class FIFO_driver;
 
     localparam DWIDTH = 8;
@@ -39,7 +40,7 @@ class FIFO_driver;
     function data_ty Data_pop(); //Task for random data pop
         pop_temp = $random() & 1'b1;
         if_FIFO.pop = pop_temp;
-        if (pop_temp) queue_fifo.pop_back(temporal);
+        if (pop_temp) temporal = queue_fifo.pop_back();
         Data_pop = temporal;
     endfunction
 

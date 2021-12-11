@@ -1,4 +1,5 @@
 interface FIFO_signals 
+import fifo_pkg::*;
 #(
     parameter WIDTH = 8
 )
