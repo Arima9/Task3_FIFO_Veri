@@ -1,8 +1,8 @@
-../src/DUT/fifo_pkg.sv
-../src/DUT/fifo_if.sv
-../src/afifo_pkte.sv
-../src/FIFO_signals.sv
-../src/DUT/all_rtl_fifo.sv
-../src/DUT/fifo_wrapper.sv
-../src/FIFO_driver.svh
-../src/TB_FIFO.sv
+../src/fifo_pkg.sv
+../src/fifo_if.sv
+../src/all_rtl_fifo.sv
+../src/fifo_wrapper.sv
+afifo_pkte.sv
+FIFO_signals.sv
+FIFO_driver.svh
+TB_FIFO.sv
