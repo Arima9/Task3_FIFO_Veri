@@ -1,6 +1,6 @@
 `ifndef MY_FIFO_PKTE
     `define FIFO_PKTE_SV
-package afifo_pkte;
+package afifo_pkg;
 
     localparam D_WIDTH = 8;
     localparam ADDRS   = 4;
@@ -11,7 +11,7 @@ package afifo_pkte;
     /*
     localparam  D_WIDTH      = 8;
     localparam  W_ADDR      = 4;
-    //localparam  ADDR_GRAY   = W_ADDR + 1;
+    localparam  ADDR_GRAY   = W_ADDR + 1;
     localparam  W_DEPTH     = 2**W_ADDR;
 	localparam  ENB		    = 1'b1;
 
