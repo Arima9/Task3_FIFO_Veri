@@ -1,4 +1,4 @@
-`timescale 1ns / 100ps
+`timescale 1ns / 10ps
 module TB_FIFO ();
 `include "FIFO_driver.svh";
 
@@ -56,7 +56,8 @@ endtask
 task monitor ();
 	$display("Monitor llamado...");
 	if(t.Data_poped != itf.data_out)begin
-		$display("Time: %t, Error: Expected %d, Obtained %d", $time, t.Data_poped, itf.data_out); 
+		$display("Time: %t, Error: Expected %d (%b), Obtained %d (%b)", $time,
+		t.Data_poped, t.Data_poped, itf.data_out, itf.data_out); 
 		$stop(2);
 	end
 endtask
@@ -66,7 +67,7 @@ initial begin
 	fork
 		forever #3 clk_wr = ~clk_wr;
 		forever #5 clk_rd = ~clk_rd;
-		@(itf.data_out) monitor();
+		forever @(itf.data_out) monitor();
 	join
 end
 	
@@ -82,7 +83,7 @@ initial begin
 	//TEST AREA
 
 	//t.clear_FIFO();
-	repeat (30)	@(posedge clk_wr) t.Data_inj();
+	repeat (40)	@(posedge clk_wr) t.Data_inj();
 	repeat (40)	@(posedge clk_rd) t.Data_pop();
 	//t.Data_pop();
 	//overflow(t.queue_size);

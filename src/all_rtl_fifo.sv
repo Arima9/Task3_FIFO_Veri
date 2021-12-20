@@ -88,7 +88,7 @@ FIFO_read_Module read_control
 
 assign ram.we_a      = ~itf.full && itf.push;
 assign ram.rd_b      = ~itf.empty && itf.pop;
-assign ram.data_a    = /*(ram_w_addr == 5)?('hff):*/itf.data_in;
+assign ram.data_a    = itf.data_in;
 assign ram.wr_addr_a = ram_w_addr;
 assign ram.rd_addr_b = ram_r_addr;
 assign itf.data_out	 = ram.rd_data_a;
@@ -222,7 +222,7 @@ FIFO_gray_counter gray_counter_read
 	.next_gray_count(rptr_next)
 );
 
-assign empty_aux = (rptr_next == {~wptr[W_ADDR:W_ADDR-1], wptr[W_ADDR-2:0]});//(wptr == rptr);
+assign empty_aux = (wptr == rptr);
 assign address = rptr[W_ADDR-1:0];
 
 always_ff@(posedge rd_clk or negedge rd_rst) begin
