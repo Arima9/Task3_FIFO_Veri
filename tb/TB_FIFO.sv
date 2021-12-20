@@ -82,8 +82,8 @@ initial begin
 	//TEST AREA
 
 	//t.clear_FIFO();
-	repeat (16)	@(posedge clk_wr) t.Data_inj();
-	repeat (16)	@(posedge clk_rd) t.Data_pop();
+	repeat (30)	@(posedge clk_wr) t.Data_inj();
+	repeat (40)	@(posedge clk_rd) t.Data_pop();
 	//t.Data_pop();
 	//overflow(t.queue_size);
 	//underflow(t.queue_size);
