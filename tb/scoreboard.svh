@@ -31,5 +31,5 @@ class scoreboard extends uvm_agent;
          if (mif.wr) 
            testmem[mif.addr] = mif.data;
     end*/
-endtask // run
+endtask
 endclass : scoreboard
